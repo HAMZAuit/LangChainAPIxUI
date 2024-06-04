@@ -31,5 +31,3 @@ VenvTemp/
 .DS_Store
 Thumbs.db
 
-# Compiled files
-Langchain-UI/apikey.py
