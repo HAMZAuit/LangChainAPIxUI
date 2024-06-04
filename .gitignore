@@ -1,0 +1,35 @@
+
+Please note that you should replace the license link with the actual link to your license file. If you don't have a license file, consider creating one. You can use [Choose a License](https://choosealicense.com/) to help you pick an appropriate license for your project.
+
+As for the `.gitignore` file, here's a basic one for Python projects:
+
+```plaintext
+# .gitignore
+
+# Python
+Langchain-UI/__pycache__/
+*.py[cod]
+*.pyd
+*.pyo
+*.pyz
+*.pyzw
+*.egg-info/
+dist/
+build/
+*.egg
+*.spec
+
+# Virtual environments
+venv/
+VenvTemp/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Compiled files
+Langchain-UI/apikey.py

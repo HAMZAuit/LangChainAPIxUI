@@ -1,0 +1,8 @@
+streamlit
+langchain
+openai
+wikipedia
+chromadb
+tiktoken 
+fastapi 
+uvicorn
