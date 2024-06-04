@@ -1,57 +1,53 @@
-# Bring in deps
-import os 
-from apikey import apikey 
+import os
+import streamlit as st
+from langchain_core.prompts.prompt import PromptTemplate
+from langchain.memory.buffer import ConversationBufferMemory
+from langchain.openai.openai import OpenAI
+from langchain.llm.llmchain import LLMChain
+from langchain_community.utilities.wikipedia import WikipediaAPIWrapper
 
-import streamlit as st 
-from langchain.llms import OpenAI
-from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain, SequentialChain 
-from langchain.memory import ConversationBufferMemory
-from langchain.utilities import WikipediaAPIWrapper 
+# Set OpenAI API key
+os.environ["OPENAI_API_KEY"] = "your-api-key"
 
-os.environ['OPENAI_API_KEY'] = apikey
-
-# App framework
-st.title('🦜🔗 YouTube GPT Creator')
-prompt = st.text_input('Plug in your prompt here') 
+# Streamlit setup
+st.title("Presentation Generator")
+prompt = st.text_input("Enter a topic for your presentation:")
 
 # Prompt templates
-title_template = PromptTemplate(
-    input_variables = ['topic'], 
-    template='write me a youtube video title about {topic}'
-)
+title_template = PromptTemplate("I need a title for a presentation about {topic}.")
+slide_template = PromptTemplate("Generate a slide about {title} based on {wikipedia_research}.")
 
-script_template = PromptTemplate(
-    input_variables = ['title', 'wikipedia_research'], 
-    template='write me a youtube video script based on this title TITLE: {title} while leveraging this wikipedia reserch:{wikipedia_research} '
-)
+# Conversation buffers
+title_buffer = ConversationBufferMemory()
+slide_buffer = ConversationBufferMemory()
 
-# Memory 
-title_memory = ConversationBufferMemory(input_key='topic', memory_key='chat_history')
-script_memory = ConversationBufferMemory(input_key='title', memory_key='chat_history')
+# OpenAI setup
+openai = OpenAI(temperature=0.9)
 
+# LLMChain setup
+title_llm = LLMChain(openai, title_template, title_buffer)
+slide_llm = LLMChain(openai, slide_template, slide_buffer)
 
-# Llms
-llm = OpenAI(temperature=0.9) 
-title_chain = LLMChain(llm=llm, prompt=title_template, verbose=True, output_key='title', memory=title_memory)
-script_chain = LLMChain(llm=llm, prompt=script_template, verbose=True, output_key='script', memory=script_memory)
-
+# Wikipedia setup
 wiki = WikipediaAPIWrapper()
 
-# Show stuff to the screen if there's a prompt
-if prompt: 
-    title = title_chain.run(prompt)
-    wiki_research = wiki.run(prompt) 
-    script = script_chain.run(title=title, wikipedia_research=wiki_research)
+if prompt:
+    # Generate title
+    title = title_llm.generate({"topic": prompt})
 
-    st.write(title) 
-    st.write(script) 
+    # Fetch Wikipedia data
+    wikipedia_research = wiki.fetch(prompt)
 
-    with st.expander('Title History'): 
-        st.info(title_memory.buffer)
+    # Generate slides
+    slides = []
+    for i in range(5):  # Generate 5 slides
+        slide = slide_llm.generate({"title": title, "wikipedia_research": wikipedia_research})
+        slides.append(slide)
 
-    with st.expander('Script History'): 
-        st.info(script_memory.buffer)
-
-    with st.expander('Wikipedia Research'): 
-        st.info(wiki_research)
+    # Display results
+    st.subheader("Presentation Title")
+    st.write(title)
+    st.subheader("Slides")
+    for i, slide in enumerate(slides, start=1):
+        st.write(f"Slide {i}")
+        st.write(slide)
