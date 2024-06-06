@@ -2,8 +2,8 @@ import os
 import streamlit as st
 from langchain_core.prompts.prompt import PromptTemplate
 from langchain.memory.buffer import ConversationBufferMemory
-from langchain.openai.openai import OpenAI
-from langchain.llm.llmchain import LLMChain
+from langchain_openai import OpenAI
+from langchain.chains import LLMChain
 from langchain_community.utilities.wikipedia import WikipediaAPIWrapper
 
 # Set OpenAI API key
