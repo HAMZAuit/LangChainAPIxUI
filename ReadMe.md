@@ -30,24 +30,27 @@ uvicorn app:app --host 0.0.0.0 --port 8000
 
 
 # appUI.py
-appUI is a FastAPI application that uses the OpenAI API to generate presentation content. It also uses the Wikipedia API for research purposes.
+Presentation Generator is a Streamlit application that uses the OpenAI API to generate presentation content. It also uses the Wikipedia API for research purposes.
 
 # Dependencies
 * Python 3.6+
-* FastAPI
+* Streamlit
 * OpenAI
 * Wikipedia API
 # Setup
 * Clone the repository.
 * Navigate to the project directory.
+```sh
+cd Langchain-UI
+```
 * Install the dependencies using pip:
 ```sh
 pip install -r requirements.txt
 ```
 # Usage
-Run the application using uvicorn:
+Run Run the application using Streamlit:
 ```sh
-uvicorn app:app --reload
+streamlit run appUI.py
 ```
 * pen the app in your web browser.
 * Enter a topic in the text input field.
