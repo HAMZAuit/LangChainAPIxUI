@@ -1,4 +1,5 @@
 # Langchain-UI
+![alt text](image.png)
 # app.py
 Langchain-UI is a FastAPI application that uses the OpenAI API to generate presentation content. It also uses the Wikipedia API for research purposes.
 
