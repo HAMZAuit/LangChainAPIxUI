@@ -22,7 +22,7 @@ build/
 # Virtual environments
 venv/
 VenvTemp/
-
+Langchain-UI/Notes.txt
 # IDEs
 .vscode/
 .idea/
