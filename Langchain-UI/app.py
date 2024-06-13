@@ -18,7 +18,7 @@ app = FastAPI()
 # Prompt templates
 title_template = PromptTemplate(
     input_variables=['topic'],
-    template='write me a presentation video title about {topic}'
+    template='write me a presentation title about {topic}'
 )
 
 script_template = PromptTemplate(
